@@ -1,0 +1,22 @@
+rules_version = '2';
+
+// One document per meeting, readable and writable by anyone signed in
+// (anonymously) who knows the meeting ID. Listing all meetings is not allowed,
+// and documents can't be deleted from the client.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /meetings/{meetingId} {
+      allow get: if request.auth != null;
+      allow create, update: if request.auth != null && validQueue(request.resource.data);
+    }
+
+    function validQueue(data) {
+      return data.keys().hasOnly(['rev', 'speaking', 'waiting', 'done', 'updatedAt'])
+        && data.rev is int
+        && data.waiting is list && data.waiting.size() <= 100
+        && data.done is list && data.done.size() <= 100
+        && (data.speaking == null || data.speaking is map)
+        && data.updatedAt == request.time;
+    }
+  }
+}

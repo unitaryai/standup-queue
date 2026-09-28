@@ -8,17 +8,50 @@
     <script src="https://www.gstatic.com/meetjs/addons/1.2.0/meet.addons.js"></script>
     <script type="module" src="sidepanel.js"></script>
   </head>
-  <body class="panel">
-    <main class="panel-layout">
-      <h1>Standup queue</h1>
-      <p>Opens a shared queue on the main stage. Everyone in the call can join it, see the order and move it on.</p>
-      <ul class="tips">
-        <li>Talking or asking questions never changes your place.</li>
-        <li>Only the <strong>Done, next person</strong> button moves the queue on.</li>
-        <li>Join in order, or hit <strong>Shuffle</strong> for a random order.</li>
-      </ul>
-      <button id="start" class="primary wide" disabled>Start standup for everyone</button>
-      <p id="status" class="muted status" role="status"></p>
+  <body>
+    <main class="panel">
+      <section class="speaking" aria-live="polite">
+        <p class="label">Now speaking</p>
+        <div class="speaking-row">
+          <p id="speaking-name" class="speaking-name"></p>
+          <button id="next" class="primary">Next</button>
+        </div>
+        <button id="skip" class="link small">Skip for now</button>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <p class="label">Up next <span id="waiting-count"></span></p>
+          <button id="shuffle" class="link small">Shuffle</button>
+        </div>
+        <ol id="waiting" class="queue"></ol>
+        <p id="waiting-empty" class="muted small-text" hidden>Nobody waiting.</p>
+      </section>
+
+      <section class="join">
+        <form id="join-form" class="row">
+          <input id="my-name" placeholder="Your name" maxlength="40" autocomplete="name" aria-label="Your name" />
+          <button class="primary" type="submit">Join</button>
+        </form>
+        <div id="joined" class="row" hidden>
+          <p id="joined-text" class="grow"></p>
+          <button id="leave" class="link small">Leave</button>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p id="done-count" class="muted small-text"></p>
+        <div class="row">
+          <button id="show-add" class="link small">Add someone</button>
+          <button id="invite" class="link small" hidden>Invite everyone</button>
+          <button id="reset" class="link small danger">Clear</button>
+        </div>
+        <form id="add-form" class="row" hidden>
+          <input id="other-name" placeholder="Their name" maxlength="40" aria-label="Name of someone else to add" />
+          <button type="submit">Add</button>
+        </form>
+        <p id="status" class="muted small-text" role="status"></p>
+      </footer>
     </main>
   </body>
 </html>
