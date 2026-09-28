@@ -15,6 +15,11 @@ export function inMeet() {
 }
 
 export async function createMeetSession() {
+  // The SDK rejects the session if these differ; logging both makes that obvious.
+  console.info("Standup queue: project number from Meet / in config", {
+    meet: new URLSearchParams(location.search).get("addon_cloud_project_number"),
+    config: CLOUD_PROJECT_NUMBER,
+  });
   return window.meet.addon.createAddonSession({ cloudProjectNumber: CLOUD_PROJECT_NUMBER });
 }
 
