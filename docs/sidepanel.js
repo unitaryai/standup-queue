@@ -1,4 +1,5 @@
 import * as queue from "./queue.js";
+import { isConfigured, listCurrentParticipants } from "./meet-api.js";
 import { connect, createMeetSession, inMeet, testRoom } from "./sync.js";
 
 const $ = (id) => document.getElementById(id);
@@ -172,6 +173,30 @@ function wireInvite(client) {
   });
 }
 
+// Host-only shortcut: fetch everyone in the call and queue them in one go.
+function wireAddCall(meetingCode) {
+  const button = $("add-call");
+  if (!isConfigured()) return;
+  button.hidden = false;
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    button.textContent = "Adding…";
+    try {
+      const names = await listCurrentParticipants(meetingCode);
+      const before = state.waiting.length;
+      apply((s) => queue.addMany(s, names));
+      const added = state.waiting.length - before;
+      $("status").textContent = added ? `Added ${added} from the call.` : "Everyone in the call is already on the list.";
+    } catch (error) {
+      console.error(error);
+      $("status").textContent = error.message;
+    } finally {
+      button.disabled = false;
+      button.textContent = "Add everyone in the call";
+    }
+  });
+}
+
 async function start() {
   wire();
   render();
@@ -180,8 +205,10 @@ async function start() {
     if (inMeet()) {
       const session = await createMeetSession();
       const client = await session.createSidePanelClient();
-      room = (await client.getMeetingInfo()).meetingId;
+      const meeting = await client.getMeetingInfo();
+      room = meeting.meetingId;
       wireInvite(client);
+      wireAddCall(meeting.meetingCode);
     } else if (!room) {
       $("status").textContent = "Test mode: open this page in more tabs to act as other people.";
     }

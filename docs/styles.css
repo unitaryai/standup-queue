@@ -70,6 +70,7 @@ p { margin: 0; }
 .row > input { flex: 1 1 120px; }
 
 .footer { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
+.add-call { justify-self: stretch; }
 .footer .row .link { padding-left: 0; padding-right: 10px; }
 
 button {

@@ -6,6 +6,7 @@
     <title>Standup queue</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://www.gstatic.com/meetjs/addons/1.2.0/meet.addons.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <script type="module" src="sidepanel.js"></script>
   </head>
   <body>
@@ -41,6 +42,7 @@
 
       <footer class="footer">
         <p id="done-count" class="muted small-text"></p>
+        <button id="add-call" class="add-call" hidden>Add everyone in the call</button>
         <div class="row">
           <button id="show-add" class="link small">Add someone</button>
           <button id="invite" class="link small" hidden>Invite everyone</button>

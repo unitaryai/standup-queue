@@ -32,15 +32,44 @@ export function isQueued(state, id) {
   return state.speaking?.id === id || state.waiting.some((e) => e.id === id);
 }
 
-/** Adds a person to the back of the queue. Rejoining after speaking is allowed. */
+const sameName = (a, b) => a.toLocaleLowerCase() === b.toLocaleLowerCase();
+
+/**
+ * Adds a person to the back of the queue. Rejoining after speaking is allowed.
+ * If the host already added someone with this name (e.g. from the call's
+ * participant list), the person takes over that place instead.
+ */
 export function join(state, entry) {
   const name = cleanName(entry.name);
   if (!name || isQueued(state, entry.id)) return state;
+  const claim = (e) => (e.id !== entry.id && sameName(e.name, name) ? { id: entry.id, name: e.name } : e);
+  if (state.speaking && sameName(state.speaking.name, name)) {
+    return bump(state, { speaking: claim(state.speaking) });
+  }
+  if (state.waiting.some((e) => sameName(e.name, name))) {
+    return bump(state, { waiting: state.waiting.map(claim) });
+  }
   if (state.waiting.length + state.done.length >= MAX_ENTRIES) return state;
   return bump(state, {
     waiting: [...state.waiting, { id: entry.id, name }],
     done: without(state.done, entry.id),
   });
+}
+
+/**
+ * Adds several people by name, skipping anyone already queued, speaking or
+ * done today. `makeId` is injectable for tests.
+ */
+export function addMany(state, names, makeId = () => crypto.randomUUID()) {
+  const everyone = [state.speaking, ...state.waiting, ...state.done].filter(Boolean);
+  const waiting = [...state.waiting];
+  for (const raw of names) {
+    const name = cleanName(raw);
+    if (!name || waiting.length + state.done.length >= MAX_ENTRIES) continue;
+    if ([...everyone, ...waiting].some((e) => sameName(e.name, name))) continue;
+    waiting.push({ id: makeId(), name });
+  }
+  return waiting.length === state.waiting.length ? state : bump(state, { waiting });
 }
 
 export function remove(state, id) {

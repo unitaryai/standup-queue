@@ -76,3 +76,18 @@ test("parseState rejects junk and cleans names from other participants", () => {
   assert.equal(parsed.waiting.length, 1);
   assert.equal(parsed.waiting[0].name.length, q.MAX_NAME_LENGTH);
 });
+
+test("addMany skips people already queued, speaking or done, and duplicates", () => {
+  let n = 0;
+  let s = q.next(q.next(withPeople("Ana", "Ben", "Cat"))); // Ana done, Ben speaking
+  s = q.addMany(s, ["ana", "BEN", "Cat", "Dev", "Dev", " "], () => `id${n++}`);
+  assert.deepEqual(names(s.waiting), ["Cat", "Dev"]);
+  assert.equal(q.addMany(s, ["Dev"]), s, "no change returns the same state");
+});
+
+test("joining with a name the host already added takes over that place", () => {
+  let s = q.addMany(q.emptyState(), ["Ana", "Ben"], () => "host-added");
+  s = q.join(s, { id: "ben-browser", name: "ben" });
+  assert.deepEqual(s.waiting.map((e) => [e.name, e.id]), [["Ana", "host-added"], ["Ben", "ben-browser"]]);
+  assert.ok(q.isQueued(s, "ben-browser"));
+});
