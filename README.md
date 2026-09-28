@@ -75,6 +75,11 @@ frame, so it must stay public.
 
 ### Meet
 
+1. Enable *Google Meet REST API* too, for **Add everyone in the call**. In
+   *Google Auth Platform*, set the audience to **Internal**, add the
+   `meetings.space.readonly` scope, and create a *Web application* client with
+   `https://unitaryai.github.io` as an authorised JavaScript origin. Its client
+   ID goes in `docs/config.js`.
 1. Enable *Google Workspace Marketplace SDK* and *Google Workspace add-ons API*
    in the Cloud project.
 2. In *Google Workspace Marketplace SDK → HTTP deployments*, create a
