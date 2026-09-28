@@ -49,7 +49,7 @@ You need a Google Cloud project in the Unitary Google Workspace organisation.
    <https://unitaryai.github.io/standup-queue/>. Pushing to `main` updates it.
    Meet loads it in a frame, so it must stay public.
 2. **Project number.** `docs/config.js` holds the Cloud project number
-   (988120791854).
+   (1009599756050).
 3. **Enable the APIs.** In the Cloud console, enable *Google Workspace
    Marketplace SDK* and *Google Workspace add-ons API*.
 4. **Create a deployment.** In *Google Workspace Marketplace SDK → HTTP
