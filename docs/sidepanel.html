@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Standup queue</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://www.gstatic.com/meetjs/addons/1.2.0/meet.addons.js"></script>
+    <script type="module" src="sidepanel.js"></script>
+  </head>
+  <body class="panel">
+    <main class="panel-layout">
+      <h1>Standup queue</h1>
+      <p>Opens a shared queue on the main stage. Everyone in the call can join it, see the order and move it on.</p>
+      <ul class="tips">
+        <li>Talking or asking questions never changes your place.</li>
+        <li>Only the <strong>Done, next person</strong> button moves the queue on.</li>
+        <li>Join in order, or hit <strong>Shuffle</strong> for a random order.</li>
+      </ul>
+      <button id="start" class="primary wide" disabled>Start standup for everyone</button>
+      <p id="status" class="muted status" role="status"></p>
+    </main>
+  </body>
+</html>

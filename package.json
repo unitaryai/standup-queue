@@ -1,0 +1,10 @@
+{
+  "name": "standup-queue",
+  "private": true,
+  "type": "module",
+  "description": "Google Meet add-on that keeps a fair speaking queue for daily standups.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "serve": "python3 -m http.server 8080 -d docs"
+  }
+}

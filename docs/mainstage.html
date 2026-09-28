@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Standup queue</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://www.gstatic.com/meetjs/addons/1.2.0/meet.addons.js"></script>
+    <script type="module" src="mainstage.js"></script>
+  </head>
+  <body class="stage">
+    <main class="stage-layout">
+      <header class="stage-header">
+        <h1>Standup queue</h1>
+        <p id="progress" class="muted"></p>
+      </header>
+
+      <section class="speaking card" aria-live="polite">
+        <p class="label">Now speaking</p>
+        <p id="speaking-name" class="speaking-name"></p>
+        <div class="row">
+          <button id="next" class="primary">Done, next person</button>
+          <button id="skip" class="ghost">Skip for now</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Up next</h2>
+          <button id="shuffle" class="ghost small">Shuffle</button>
+        </div>
+        <ol id="waiting" class="queue"></ol>
+        <p id="waiting-empty" class="muted" hidden>Nobody waiting. Join below.</p>
+      </section>
+
+      <section class="card controls">
+        <form id="join-form" class="row">
+          <input id="my-name" placeholder="Your name" maxlength="40" autocomplete="name" aria-label="Your name" />
+          <button class="primary" type="submit">Join queue</button>
+        </form>
+        <div id="joined" class="row" hidden>
+          <p id="joined-text"></p>
+          <button id="leave" class="ghost small">Leave</button>
+        </div>
+        <form id="add-form" class="row">
+          <input id="other-name" placeholder="Add someone else" maxlength="40" aria-label="Name of someone else to add" />
+          <button type="submit">Add</button>
+        </form>
+      </section>
+
+      <details class="card">
+        <summary id="done-summary">Finished</summary>
+        <ol id="done" class="queue done"></ol>
+        <button id="reset" class="ghost small danger">Clear everything</button>
+      </details>
+
+      <p id="status" class="muted status" role="status"></p>
+    </main>
+  </body>
+</html>

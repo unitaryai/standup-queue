@@ -1,0 +1,17 @@
+{
+  "addOns": {
+    "common": {
+      "name": "Standup queue",
+      "logoUrl": "https://unitaryai.github.io/standup-queue/logo.png"
+    },
+    "meet": {
+      "web": {
+        "sidePanelUrl": "https://unitaryai.github.io/standup-queue/sidepanel.html",
+        "supportsScreenSharing": false,
+        "addOnOrigins": ["https://unitaryai.github.io"],
+        "logoUrl": "https://unitaryai.github.io/standup-queue/logo.png",
+        "darkModeLogoUrl": "https://unitaryai.github.io/standup-queue/logo.png"
+      }
+    }
+  }
+}
